@@ -1,11 +1,5 @@
-interface Props {
-    
-};
+interface Props {}
 
 export const Home = (props: Props) => {
-    return (
-        <div>
-            Home
-        </div>
-    );
+  return <div>Home</div>;
 };
