@@ -1,8 +1,16 @@
 import firebase from "firebase/compat";
 import UserInfo = firebase.UserInfo;
-import React, { PropsWithChildren, useContext, useState } from "react";
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { firebaseAuth } from "../firebase/firebase";
@@ -27,13 +35,28 @@ const authContext = React.createContext<AuthContext>({
 export const AuthContextProvider = (props: PropsWithChildren) => {
   const [firebaseUser, setFirebaseUser] = useState<UserInfo | null>(null);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+      if (user) {
+        setFirebaseUser(user);
+      } else {
+        setFirebaseUser(null);
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   async function logIn(email: string, password: string) {
-    const userCredential = await signInWithEmailAndPassword(
-      firebaseAuth,
-      email,
-      password
-    );
-    setFirebaseUser(userCredential.user);
+    setPersistence(firebaseAuth, browserSessionPersistence).then(async () => {
+      const userCredential = await signInWithEmailAndPassword(
+        firebaseAuth,
+        email,
+        password
+      );
+      setFirebaseUser(userCredential.user);
+    });
   }
 
   async function logOut() {
