@@ -10,7 +10,7 @@ export const Home = () => {
   const [pomodoroTab, setPomodoroTab] = useState<PomodoroType>("Pomodoro");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { register, logIn, user } = useAuthContext();
+  const { register, logIn, logOut, user } = useAuthContext();
 
   const initialTimer = useMemo(() => {
     if (pomodoroTab === "Pomodoro") {
@@ -38,6 +38,10 @@ export const Home = () => {
     logIn(email, password);
   }
 
+  function logout() {
+    logOut();
+  }
+
   function handleEmailLogin(email: React.ChangeEvent<HTMLInputElement>) {
     setEmail(email.target.value);
   }
@@ -59,6 +63,9 @@ export const Home = () => {
         <button onClick={login}>Login</button>
       </div>
       <div>{user ? "logged in" : "not logged in"}</div>
+      <div>
+        <button onClick={logout}>Logout</button>
+      </div>
       <button
         onClick={() => {
           togglePomodoroType("Pomodoro");
