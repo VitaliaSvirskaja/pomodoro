@@ -74,6 +74,11 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
       });
     } else {
       await API.updateTimerSettings(user.uid, pomodoro, shortBreak, longBreak);
+      setDefaultTimer({
+        pomodoro: pomodoro,
+        shortBreak: shortBreak,
+        longBreak: longBreak,
+      });
     }
   }
 
