@@ -2,15 +2,14 @@ import React, { useMemo, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { Timer } from "../components/Timer";
+import { Navbar } from "../components/Navbar";
 
 type PomodoroType = "Pomodoro" | "Short Break" | "Long Break";
 
 export const Home = () => {
+  const { logOut } = useAuthContext();
   const { defaultTimer } = useSettingsContext();
   const [pomodoroTab, setPomodoroTab] = useState<PomodoroType>("Pomodoro");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { register, logIn, logOut, user } = useAuthContext();
 
   const initialTimer = useMemo(() => {
     if (pomodoroTab === "Pomodoro") {
@@ -30,42 +29,17 @@ export const Home = () => {
     setPomodoroTab(pomodoroType);
   }
 
-  function createUser() {
-    register("test@test.de", "test123");
-  }
-
-  function login() {
-    logIn(email, password);
-  }
-
   function logout() {
     logOut();
   }
 
-  function handleEmailLogin(email: React.ChangeEvent<HTMLInputElement>) {
-    setEmail(email.target.value);
-  }
-
-  function handlePasswordLogin(password: React.ChangeEvent<HTMLInputElement>) {
-    setPassword(password.target.value);
-  }
-
   return (
     <div>
-      <div>
-        <button onClick={createUser}>Create User</button>
-      </div>
-      <div>
-        <label htmlFor="email">Email: </label>
-        <input type="email" id="email" onChange={handleEmailLogin} />
-        <label htmlFor="password">Password: </label>
-        <input type="password" id="password" onChange={handlePasswordLogin} />
-        <button onClick={login}>Login</button>
-      </div>
-      <div>{user ? "logged in" : "not logged in"}</div>
+      <Navbar />
       <div>
         <button onClick={logout}>Logout</button>
       </div>
+
       <button
         onClick={() => {
           togglePomodoroType("Pomodoro");
