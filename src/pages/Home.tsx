@@ -3,6 +3,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { Timer } from "../components/Timer";
 import { Navbar } from "../components/Navbar";
+import styles from "./Home.module.css";
 
 type PomodoroType = "Pomodoro" | "Short Break" | "Long Break";
 
@@ -34,7 +35,7 @@ export const Home = () => {
   }
 
   return (
-    <div>
+    <div className={styles.homepage}>
       <Navbar />
       <div>
         <button onClick={logout}>Logout</button>

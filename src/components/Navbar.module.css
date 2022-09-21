@@ -1,0 +1,27 @@
+.navbarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 5rem;
+  height: 2.6rem;
+}
+.navbarRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  background-color: #535bf2;
+}
+
+.login {
+}
+
+.profileIcon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.loginButton {
+  font-weight: 700;
+  font-size: 1.5rem;
+}

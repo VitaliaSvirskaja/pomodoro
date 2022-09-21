@@ -15,6 +15,7 @@ export const Login = () => {
   if (isLoggedIn) {
     return <Navigate to="/" />;
   }
+
   function login() {
     logIn(email, password);
   }

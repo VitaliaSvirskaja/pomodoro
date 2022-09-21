@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSettingsContext } from "../context/SettingsContext";
+import settingsIcon from "../assets/settingsIcon.png";
+import styles from "./TimerSettings.module.css";
 
 export const TimerSettings = () => {
   const { saveSettings, defaultTimer } = useSettingsContext();
@@ -8,6 +10,7 @@ export const TimerSettings = () => {
     defaultTimer.shortBreak
   );
   const [longBreakTimer, setLongBreakTimer] = useState(defaultTimer.longBreak);
+  const [isSettingVisible, setIsSettingVisible] = useState(false);
 
   useEffect(() => {
     setPomodoroTimer(defaultTimer.pomodoro);
@@ -33,12 +36,27 @@ export const TimerSettings = () => {
   function handleSaveSettings(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     saveSettings(pomodoroTimer, shortBreakTimer, longBreakTimer);
+    setIsSettingVisible(false);
+  }
+
+  function handleSettingsClick() {
+    setIsSettingVisible(!isSettingVisible);
   }
 
   return (
-    <div style={{ backgroundColor: "lightpink" }}>
-      <button>Settings</button>
-      <form onSubmit={handleSaveSettings}>
+    <div>
+      <img
+        src={settingsIcon}
+        alt="settings-icon"
+        className={styles.settingsIcon}
+        onClick={handleSettingsClick}
+      />
+
+      <form
+        onSubmit={handleSaveSettings}
+        className={styles.settingsform}
+        style={{ visibility: isSettingVisible ? "visible" : "hidden" }}
+      >
         <label htmlFor="pomodoro">Pomodoro:</label>
         <input
           type="number"
