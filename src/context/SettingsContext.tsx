@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import { useAuthContext } from "./AuthContext";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase/firebase";
+import { firestore } from "../firebase/firebase";
 import { API } from "../firebase/API";
 
 interface SettingsContext {
@@ -46,7 +46,7 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
           longBreak: 15,
         });
       } else {
-        const userRef = doc(db, "users", user?.uid);
+        const userRef = doc(firestore, "users", user?.uid);
         const userDoc = await getDoc(userRef);
         const userTimerPomodoro = userDoc.get("pomodoro");
         const userTimerLongBreak = userDoc.get("longBreak");
