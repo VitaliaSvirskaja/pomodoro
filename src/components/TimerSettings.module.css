@@ -2,12 +2,3 @@
   width: 2rem;
   height: 2rem;
 }
-
-.settingsform {
-  display: flex;
-  flex-direction: column;
-}
-
-.showForm {
-  visibility: hidden;
-}
