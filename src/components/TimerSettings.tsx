@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import settingsIcon from "../assets/settingsIcon.png";
 import styles from "./TimerSettings.module.css";
-import { SettingsDialog } from "./SettingsDialog";
+import { TimerSettingsDialog } from "./TimerSettingsDialog";
 
 export const TimerSettings = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   function handleSettingsClick() {
-    console.log("Settings clicked");
     setIsDialogOpen(!isDialogOpen);
   }
 
-  const confirm = () => {
+  function handleCloseDialog() {
     setIsDialogOpen(false);
-  };
+  }
 
   return (
     <div>
@@ -25,7 +24,7 @@ export const TimerSettings = () => {
           onClick={handleSettingsClick}
         />
       </div>
-      <SettingsDialog isOpen={isDialogOpen} confirm={confirm} />
+      <TimerSettingsDialog isOpen={isDialogOpen} onClose={handleCloseDialog} />
     </div>
   );
 };
