@@ -2,6 +2,7 @@ import { Dialog } from "@headlessui/react";
 import React, { useEffect, useState } from "react";
 import { useSettingsContext } from "../context/SettingsContext";
 import { Input } from "./Input";
+import { DialiogButtons } from "./DialiogButtons";
 
 interface Props {
   isOpen: boolean;
@@ -68,16 +69,12 @@ export const TimerSettingsDialog = (props: Props) => {
             />
 
             <div>
-              <button type="submit" className="rounded border-2 w-20 p-2">
-                Save
-              </button>
-              <button
-                type="button" //Typisierung als "button", da ein button per default i.d.R. als type "submit" angelegt wird
+              <DialiogButtons type="submit" buttonName="Save" />
+              <DialiogButtons
+                type="button"
+                buttonName="Close"
                 onClick={props.onClose}
-                className="rounded border-2 w-20 p-2"
-              >
-                Close
-              </button>
+              />
             </div>
           </form>
         </Dialog.Panel>
