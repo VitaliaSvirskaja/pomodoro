@@ -18,7 +18,7 @@ export const Navbar = () => {
     <div className={styles.navbarContainer}>
       <div>Logo</div>
       <div className={styles.navbarRight}>
-        <TimerSettings></TimerSettings>
+        <TimerSettings />
         {user ? (
           <img
             src={profileIcon}
