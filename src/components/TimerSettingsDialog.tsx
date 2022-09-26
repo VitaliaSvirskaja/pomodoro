@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSettingsContext } from "../context/SettingsContext";
 import { Input } from "./Input";
 import { DialogButton } from "./DialogButton";
+import { Toggle } from "./Toggle";
 
 interface Props {
   isOpen: boolean;
@@ -115,6 +116,12 @@ export const TimerSettingsDialog = (props: Props) => {
               }}
               value={isNaN(longBreakTimer) ? "" : longBreakTimer}
               error={longBreakTimer < 0 ? "Invalid input!" : ""}
+            />
+
+            <Toggle
+              label="Auto start breaks?"
+              isActive={isAutoBreakActive}
+              onToggle={setIsAutoBreakActive}
             />
 
             <div className=" flex gap-3">
