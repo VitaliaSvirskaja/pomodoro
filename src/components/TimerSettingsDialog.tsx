@@ -55,8 +55,10 @@ export const TimerSettingsDialog = (props: Props) => {
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       {/* Full screen container to center the dialog panel*/}
       <div className="fixed inset-0 flex justify-center items-center">
-        <Dialog.Panel className=" flex flex-col justify-center items-center gap-4 rounded bg-white p-4">
-          <Dialog.Title>Timer Settings</Dialog.Title>
+        <Dialog.Panel className=" flex flex-col justify-center items-center gap-4 rounded bg-white p-4 min-h-max">
+          <Dialog.Title className="text-lg font-medium">
+            Timer Settings
+          </Dialog.Title>
           <form
             onSubmit={handleSaveSettings}
             className="flex flex-col justify-center items-center gap-4"
@@ -64,17 +66,24 @@ export const TimerSettingsDialog = (props: Props) => {
             <Input
               label="Pomodoro"
               type={"number"}
-              min={0}
-              onChange={(event) => setPomodoroTimer(event.target.valueAsNumber)}
+              min={1}
+              onChange={(event) => {
+                setPomodoroTimer(event.target.valueAsNumber);
+              }}
               value={pomodoroTimer}
+              error={pomodoroTimer < 0 ? "A timer can't be negative!" : ""}
             />
             <Input
               label="Short Break"
               type={"number"}
               min={0}
-              onChange={(event) =>
-                setShortBreakTimer(event.target.valueAsNumber)
-              }
+              onChange={(event) => {
+                if (event.target.valueAsNumber === parseInt("e")) {
+                  setShortBreakTimer(0);
+                } else {
+                  setShortBreakTimer(event.target.valueAsNumber);
+                }
+              }}
               onBlur={() => {
                 if (isNaN(shortBreakTimer)) {
                   setShortBreakTimer(0);
@@ -83,15 +92,20 @@ export const TimerSettingsDialog = (props: Props) => {
                 }
               }}
               value={isNaN(shortBreakTimer) ? "" : shortBreakTimer}
+              error={shortBreakTimer < 0 ? "A timer can't be negative!" : ""}
             />
 
             <Input
               label="Long Break"
               type={"number"}
               min={0}
-              onChange={(event) =>
-                setLongBreakTimer(event.target.valueAsNumber)
-              }
+              onChange={(event) => {
+                if (event.target.valueAsNumber === parseInt("e")) {
+                  setLongBreakTimer(0);
+                } else {
+                  setLongBreakTimer(event.target.valueAsNumber);
+                }
+              }}
               onBlur={() => {
                 if (isNaN(longBreakTimer)) {
                   setLongBreakTimer(0);
@@ -100,9 +114,10 @@ export const TimerSettingsDialog = (props: Props) => {
                 }
               }}
               value={isNaN(longBreakTimer) ? "" : longBreakTimer}
+              error={longBreakTimer < 0 ? "Invalid input!" : ""}
             />
 
-            <div>
+            <div className=" flex gap-3">
               <DialogButtons type="submit" buttonName="Save" />
               <DialogButtons
                 type="button"
