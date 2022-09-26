@@ -14,13 +14,10 @@ export const Home = () => {
 
   const initialTimer = useMemo(() => {
     if (pomodoroTab === "Pomodoro") {
-      console.log("Pomodoro");
       return defaultTimer.pomodoro;
     } else if (pomodoroTab === "Short Break") {
-      console.log("Short Break");
       return defaultTimer.shortBreak;
     } else {
-      console.log("Long Break");
       console.log(defaultTimer.longBreak);
       return defaultTimer.longBreak;
     }
