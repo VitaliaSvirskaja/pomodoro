@@ -2,7 +2,7 @@ import { Dialog } from "@headlessui/react";
 import React, { useEffect, useState } from "react";
 import { useSettingsContext } from "../context/SettingsContext";
 import { Input } from "./Input";
-import { DialogButtons } from "./DialogButtons";
+import { DialogButton } from "./DialogButton";
 
 interface Props {
   isOpen: boolean;
@@ -118,8 +118,8 @@ export const TimerSettingsDialog = (props: Props) => {
             />
 
             <div className=" flex gap-3">
-              <DialogButtons type="submit" buttonName="Save" />
-              <DialogButtons
+              <DialogButton type="submit" buttonName="Save" />
+              <DialogButton
                 type="button"
                 buttonName="Close"
                 onClick={handleCloseClick}
