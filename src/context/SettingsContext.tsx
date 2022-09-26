@@ -13,9 +13,11 @@ interface SettingsContext {
   saveSettings: (
     pomodoro: number,
     shortBreak: number,
-    longBreak: number
+    longBreak: number,
+    isAutoBreakActive: boolean
   ) => void;
   defaultTimer: DefaultTimer;
+  isAutoBreakActive: boolean;
 }
 
 export interface DefaultTimer {
@@ -27,6 +29,7 @@ export interface DefaultTimer {
 const settingsContext = React.createContext<SettingsContext>({
   saveSettings: () => undefined,
   defaultTimer: { pomodoro: 25, shortBreak: 5, longBreak: 15 },
+  isAutoBreakActive: false,
 });
 
 export const SettingsContextProvider = (props: PropsWithChildren) => {
@@ -35,10 +38,11 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
     shortBreak: 5,
     longBreak: 15,
   });
+  const [isAutoBreakActive, setIsAutoBreakActive] = useState(false);
   const { user } = useAuthContext();
 
   useEffect(() => {
-    async function fetchTimer() {
+    async function fetchSettings() {
       if (!user) {
         setDefaultTimer({
           pomodoro: 25,
@@ -51,35 +55,39 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
         const userTimerPomodoro = userDoc.get("pomodoro");
         const userTimerLongBreak = userDoc.get("longBreak");
         const userTimerShortBreak = userDoc.get("shortBreak");
+        const isAutoBreakActive = userDoc.get("isAutoBreakActive");
         setDefaultTimer({
           pomodoro: userTimerPomodoro,
           shortBreak: userTimerShortBreak,
           longBreak: userTimerLongBreak,
         });
+        setIsAutoBreakActive(isAutoBreakActive);
       }
     }
-    fetchTimer();
+    fetchSettings();
   }, [user]);
 
   async function handleSaveSettings(
     pomodoro: number,
     shortBreak: number,
-    longBreak: number
+    longBreak: number,
+    isAutoBreakActive: boolean
   ) {
-    if (!user) {
-      setDefaultTimer({
-        pomodoro: pomodoro,
-        shortBreak: shortBreak,
-        longBreak: longBreak,
-      });
-    } else {
-      await API.updateTimerSettings(user.uid, pomodoro, shortBreak, longBreak);
-      setDefaultTimer({
-        pomodoro: pomodoro,
-        shortBreak: shortBreak,
-        longBreak: longBreak,
-      });
+    if (user) {
+      await API.updateTimerSettings(
+        user.uid,
+        pomodoro,
+        shortBreak,
+        longBreak,
+        isAutoBreakActive
+      );
     }
+    setIsAutoBreakActive(isAutoBreakActive);
+    setDefaultTimer({
+      pomodoro: pomodoro,
+      shortBreak: shortBreak,
+      longBreak: longBreak,
+    });
   }
 
   return (
@@ -87,6 +95,7 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
       value={{
         saveSettings: handleSaveSettings,
         defaultTimer: defaultTimer,
+        isAutoBreakActive: isAutoBreakActive,
       }}
     >
       {props.children}

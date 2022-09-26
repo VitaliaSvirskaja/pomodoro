@@ -14,13 +14,15 @@ async function updateTimerSettings(
   userID: string,
   pomodoro: number,
   shortBreak: number,
-  longBreak: number
+  longBreak: number,
+  isAutoBreakActive: boolean
 ) {
   const userRef = doc(firestore, "users", userID);
   await updateDoc(userRef, {
     pomodoro: pomodoro,
     shortBreak: shortBreak,
     longBreak: longBreak,
+    isAutoBreakActive: isAutoBreakActive,
   });
 }
 

@@ -11,23 +11,36 @@ interface Props {
 }
 
 export const TimerSettingsDialog = (props: Props) => {
-  const { saveSettings, defaultTimer } = useSettingsContext();
+  const {
+    saveSettings,
+    defaultTimer,
+    isAutoBreakActive: defaultIsAutoBreakActive,
+  } = useSettingsContext();
   const [pomodoroTimer, setPomodoroTimer] = useState(defaultTimer.pomodoro);
   const [shortBreakTimer, setShortBreakTimer] = useState(
     defaultTimer.shortBreak
   );
   const [longBreakTimer, setLongBreakTimer] = useState(defaultTimer.longBreak);
+  const [isAutoBreakActive, setIsAutoBreakActive] = useState(
+    defaultIsAutoBreakActive
+  );
 
   useEffect(() => {
     setPomodoroTimer(defaultTimer.pomodoro);
     setShortBreakTimer(defaultTimer.shortBreak);
     setLongBreakTimer(defaultTimer.longBreak);
-  }, [defaultTimer, props.isOpen]);
+    setIsAutoBreakActive(defaultIsAutoBreakActive);
+  }, [defaultIsAutoBreakActive, defaultTimer, props.isOpen]);
 
   function handleSaveSettings(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (pomodoroTimer >= 0) {
-      saveSettings(pomodoroTimer, shortBreakTimer, longBreakTimer);
+      saveSettings(
+        pomodoroTimer,
+        shortBreakTimer,
+        longBreakTimer,
+        isAutoBreakActive
+      );
       props.onClose();
     } else {
       alert("Pomodoro timer must be set");
