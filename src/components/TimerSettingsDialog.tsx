@@ -56,7 +56,7 @@ export const TimerSettingsDialog = (props: Props) => {
       {/* Full screen container to center the dialog panel*/}
       <div className="fixed inset-0 flex items-center justify-center">
         <Dialog.Panel className="mx-auto flex w-full max-w-sm flex-col gap-2 rounded bg-white p-6">
-          <Dialog.Title className="text-lg font-medium">
+          <Dialog.Title className="text-xl font-medium">
             Timer Settings
           </Dialog.Title>
           <form
