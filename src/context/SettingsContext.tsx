@@ -8,14 +8,10 @@ import { useAuthContext } from "./AuthContext";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 import { API } from "../firebase/API";
+import { UserSettings } from "../interfaces/UserSettings";
 
 interface SettingsContext {
-  saveSettings: (
-    pomodoro: number,
-    shortBreak: number,
-    longBreak: number,
-    isAutoBreakActive: boolean
-  ) => void;
+  saveSettings: (userSettings: UserSettings) => void;
   defaultTimer: DefaultTimer;
   isAutoBreakActive: boolean;
 }
@@ -67,27 +63,13 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
     fetchSettings();
   }, [user]);
 
-  async function handleSaveSettings(
-    pomodoro: number,
-    shortBreak: number,
-    longBreak: number,
-    isAutoBreakActive: boolean
-  ) {
+  async function handleSaveSettings(userSettings: UserSettings) {
     if (user) {
-      await API.updateTimerSettings(
-        user.uid,
-        pomodoro,
-        shortBreak,
-        longBreak,
-        isAutoBreakActive
-      );
+      await API.updateTimerSettings(user.uid, userSettings);
     }
+    const { isAutoBreakActive, ...defaultTimer } = userSettings;
     setIsAutoBreakActive(isAutoBreakActive);
-    setDefaultTimer({
-      pomodoro: pomodoro,
-      shortBreak: shortBreak,
-      longBreak: longBreak,
-    });
+    setDefaultTimer(defaultTimer);
   }
 
   return (

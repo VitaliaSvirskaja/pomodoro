@@ -35,12 +35,12 @@ export const TimerSettingsDialog = (props: Props) => {
   function handleSaveSettings(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (pomodoroTimer >= 0) {
-      saveSettings(
-        pomodoroTimer,
-        shortBreakTimer,
-        longBreakTimer,
-        isAutoBreakActive
-      );
+      saveSettings({
+        pomodoro: pomodoroTimer,
+        shortBreak: shortBreakTimer,
+        longBreak: longBreakTimer,
+        isAutoBreakActive: isAutoBreakActive,
+      });
       props.onClose();
     } else {
       alert("Pomodoro timer must be set");
