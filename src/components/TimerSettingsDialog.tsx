@@ -2,7 +2,7 @@ import { Dialog } from "@headlessui/react";
 import React, { useEffect, useState } from "react";
 import { useSettingsContext } from "../context/SettingsContext";
 import { Input } from "./Input";
-import { DialiogButtons } from "./DialiogButtons";
+import { DialogButtons } from "./DialogButtons";
 
 interface Props {
   isOpen: boolean;
@@ -24,13 +24,34 @@ export const TimerSettingsDialog = (props: Props) => {
   }, [defaultTimer]);
 
   function handleSaveSettings(event: React.FormEvent<HTMLFormElement>) {
+    // TODO: Prüfen, ob alle Inputfelder befüllt sind bevor gespeichert wird bzw. vorherigen Wert übernehmen
     event.preventDefault();
-    saveSettings(pomodoroTimer, shortBreakTimer, longBreakTimer);
-    props.onClose();
+    if (pomodoroTimer >= 0) {
+      saveSettings(pomodoroTimer, shortBreakTimer, longBreakTimer);
+      props.onClose();
+    } else {
+      alert("Pomodoro timer must be set");
+    }
+  }
+
+  function handleOverlayClick() {
+    if (!isNaN(pomodoroTimer)) {
+      props.onClose();
+    } else {
+      alert("Pomodoro Timer is incorrect!");
+    }
+  }
+
+  function handleCloseClick() {
+    if (!isNaN(pomodoroTimer)) {
+      props.onClose();
+    } else {
+      alert("Pomodoro Timer is incorrect!");
+    }
   }
 
   return (
-    <Dialog open={props.isOpen} onClose={props.onClose}>
+    <Dialog open={props.isOpen} onClose={handleOverlayClick}>
       {/* Backdrop */}
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       {/* Full screen container to center the dialog panel*/}
@@ -44,36 +65,50 @@ export const TimerSettingsDialog = (props: Props) => {
             <Input
               label="Pomodoro"
               type={"number"}
-              required={true}
+              min={0}
               onChange={(event) => setPomodoroTimer(event.target.valueAsNumber)}
               value={pomodoroTimer}
             />
             <Input
               label="Short Break"
               type={"number"}
-              required={true}
+              min={0}
               onChange={(event) =>
                 setShortBreakTimer(event.target.valueAsNumber)
               }
-              value={shortBreakTimer}
+              onBlur={() => {
+                if (isNaN(shortBreakTimer)) {
+                  setShortBreakTimer(0);
+                } else {
+                  setShortBreakTimer(shortBreakTimer);
+                }
+              }}
+              value={isNaN(shortBreakTimer) ? "" : shortBreakTimer}
             />
 
             <Input
               label="Long Break"
               type={"number"}
-              required={true}
+              min={0}
               onChange={(event) =>
                 setLongBreakTimer(event.target.valueAsNumber)
               }
-              value={longBreakTimer}
+              onBlur={() => {
+                if (isNaN(longBreakTimer)) {
+                  setLongBreakTimer(0);
+                } else {
+                  setLongBreakTimer(longBreakTimer);
+                }
+              }}
+              value={isNaN(longBreakTimer) ? "" : longBreakTimer}
             />
 
             <div>
-              <DialiogButtons type="submit" buttonName="Save" />
-              <DialiogButtons
+              <DialogButtons type="submit" buttonName="Save" />
+              <DialogButtons
                 type="button"
                 buttonName="Close"
-                onClick={props.onClose}
+                onClick={handleCloseClick}
               />
             </div>
           </form>
