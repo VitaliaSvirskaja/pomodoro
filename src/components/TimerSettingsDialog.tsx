@@ -21,7 +21,7 @@ export const TimerSettingsDialog = (props: Props) => {
     setPomodoroTimer(defaultTimer.pomodoro);
     setShortBreakTimer(defaultTimer.shortBreak);
     setLongBreakTimer(defaultTimer.longBreak);
-  }, [defaultTimer]);
+  }, [defaultTimer, props.isOpen]);
 
   function handleSaveSettings(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
