@@ -6,7 +6,10 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const DialogButton = ({ buttonName, ...buttonProps }: Props) => {
   return (
-    <button className="rounded border-2 w-20 p-2" {...buttonProps}>
+    <button
+      className="w-20 rounded border border-2 p-2 outline-0 hover:shadow focus:ring focus:ring-2 focus:ring-violet-500"
+      {...buttonProps}
+    >
       {buttonName}
     </button>
   );
