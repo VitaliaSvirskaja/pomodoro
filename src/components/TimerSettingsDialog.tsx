@@ -24,7 +24,6 @@ export const TimerSettingsDialog = (props: Props) => {
   }, [defaultTimer]);
 
   function handleSaveSettings(event: React.FormEvent<HTMLFormElement>) {
-    // TODO: Prüfen, ob alle Inputfelder befüllt sind bevor gespeichert wird bzw. vorherigen Wert übernehmen
     event.preventDefault();
     if (pomodoroTimer >= 0) {
       saveSettings(pomodoroTimer, shortBreakTimer, longBreakTimer);
