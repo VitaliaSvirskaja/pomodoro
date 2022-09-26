@@ -54,14 +54,14 @@ export const TimerSettingsDialog = (props: Props) => {
       {/* Backdrop */}
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       {/* Full screen container to center the dialog panel*/}
-      <div className="fixed inset-0 flex justify-center items-center">
-        <Dialog.Panel className=" flex flex-col justify-center items-center gap-4 rounded bg-white p-4 min-h-max">
+      <div className="fixed inset-0 flex items-center justify-center">
+        <Dialog.Panel className="mx-auto w-full max-w-sm rounded bg-white">
           <Dialog.Title className="text-lg font-medium">
             Timer Settings
           </Dialog.Title>
           <form
             onSubmit={handleSaveSettings}
-            className="flex flex-col justify-center items-center gap-4"
+            className="flex flex-col items-center justify-center gap-4"
           >
             <Input
               label="Pomodoro"
