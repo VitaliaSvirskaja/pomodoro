@@ -3,4 +3,5 @@ export interface UserSettings {
   shortBreak: number;
   longBreak: number;
   isAutoBreakActive: boolean;
+  isAutoPomodoroActive: boolean;
 }

@@ -15,6 +15,7 @@ export const TimerSettingsDialog = (props: Props) => {
     saveSettings,
     defaultTimer,
     isAutoBreakActive: defaultIsAutoBreakActive,
+    isAutoPomodoroActive: defaultIsAutoPomodoroActive,
   } = useSettingsContext();
   const [pomodoroTimer, setPomodoroTimer] = useState(defaultTimer.pomodoro);
   const [shortBreakTimer, setShortBreakTimer] = useState(
@@ -23,6 +24,9 @@ export const TimerSettingsDialog = (props: Props) => {
   const [longBreakTimer, setLongBreakTimer] = useState(defaultTimer.longBreak);
   const [isAutoBreakActive, setIsAutoBreakActive] = useState(
     defaultIsAutoBreakActive
+  );
+  const [isAutoPomodoroActive, setIsAutoPomodoroActive] = useState(
+    defaultIsAutoPomodoroActive
   );
 
   useEffect(() => {
@@ -40,6 +44,7 @@ export const TimerSettingsDialog = (props: Props) => {
         shortBreak: shortBreakTimer,
         longBreak: longBreakTimer,
         isAutoBreakActive: isAutoBreakActive,
+        isAutoPomodoroActive: isAutoPomodoroActive,
       });
       props.onClose();
     } else {
@@ -135,6 +140,11 @@ export const TimerSettingsDialog = (props: Props) => {
               label="Auto start breaks?"
               isActive={isAutoBreakActive}
               onToggle={setIsAutoBreakActive}
+            />
+            <Toggle
+              label="Auto start pomorodo?"
+              isActive={isAutoPomodoroActive}
+              onToggle={setIsAutoPomodoroActive}
             />
 
             <div className=" flex gap-3">

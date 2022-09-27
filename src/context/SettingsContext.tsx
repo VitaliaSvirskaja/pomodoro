@@ -14,6 +14,7 @@ interface SettingsContext {
   saveSettings: (userSettings: UserSettings) => void;
   defaultTimer: DefaultTimer;
   isAutoBreakActive: boolean;
+  isAutoPomodoroActive: boolean;
 }
 
 export interface DefaultTimer {
@@ -26,6 +27,7 @@ const settingsContext = React.createContext<SettingsContext>({
   saveSettings: () => undefined,
   defaultTimer: { pomodoro: 25, shortBreak: 5, longBreak: 15 },
   isAutoBreakActive: false,
+  isAutoPomodoroActive: false,
 });
 
 export const SettingsContextProvider = (props: PropsWithChildren) => {
@@ -35,6 +37,7 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
     longBreak: 15,
   });
   const [isAutoBreakActive, setIsAutoBreakActive] = useState(false);
+  const [isAutoPomodoroActive, setIsAutoPomodoroActive] = useState(false);
   const { user } = useAuthContext();
 
   useEffect(() => {
@@ -52,12 +55,14 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
         const userTimerLongBreak = userDoc.get("longBreak");
         const userTimerShortBreak = userDoc.get("shortBreak");
         const isAutoBreakActive = userDoc.get("isAutoBreakActive");
+        const isAutoPomodoroActive = userDoc.get("isAutoPomodoroActive");
         setDefaultTimer({
           pomodoro: userTimerPomodoro,
           shortBreak: userTimerShortBreak,
           longBreak: userTimerLongBreak,
         });
         setIsAutoBreakActive(isAutoBreakActive);
+        setIsAutoPomodoroActive(isAutoPomodoroActive);
       }
     }
     fetchSettings();
@@ -67,8 +72,10 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
     if (user) {
       await API.updateTimerSettings(user.uid, userSettings);
     }
-    const { isAutoBreakActive, ...defaultTimer } = userSettings;
+    const { isAutoBreakActive, isAutoPomodoroActive, ...defaultTimer } =
+      userSettings;
     setIsAutoBreakActive(isAutoBreakActive);
+    setIsAutoPomodoroActive(isAutoPomodoroActive);
     setDefaultTimer(defaultTimer);
   }
 
@@ -78,6 +85,7 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
         saveSettings: handleSaveSettings,
         defaultTimer: defaultTimer,
         isAutoBreakActive: isAutoBreakActive,
+        isAutoPomodoroActive: isAutoPomodoroActive,
       }}
     >
       {props.children}
