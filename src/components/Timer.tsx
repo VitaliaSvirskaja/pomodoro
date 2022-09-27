@@ -3,25 +3,27 @@ import { timerUtils } from "../utils/timerUtils";
 
 interface Props {
   initialTimer: number;
+  onTimerFinished: () => void;
+  isPaused: boolean;
+  onPause: () => void;
+  onStart: () => void;
 }
 
-export const Timer = (props: Props) => {
+export const Timer = ({
+  initialTimer,
+  onTimerFinished,
+  isPaused,
+  onPause,
+  onStart,
+}: Props) => {
   const [timer, setTimer] = useState<number>(
-    timerUtils.minutesToSeconds(props.initialTimer)
+    timerUtils.minutesToSeconds(initialTimer)
   );
-  const [isPaused, setIsPaused] = useState(true);
+
   const displayedTimer = timerUtils.secondsToDisplayedTimer(timer);
 
-  function handlePause() {
-    setIsPaused(true);
-  }
-
   function handleReset() {
-    setTimer(timerUtils.minutesToSeconds(props.initialTimer));
-  }
-
-  function handleStart() {
-    setIsPaused(false);
+    setTimer(timerUtils.minutesToSeconds(initialTimer));
   }
 
   useEffect(() => {
@@ -37,12 +39,18 @@ export const Timer = (props: Props) => {
     return () => clearInterval(intervalID);
   }, [isPaused]);
 
+  useEffect(() => {
+    if (timer === 0) {
+      onTimerFinished();
+    }
+  }, [timer, onTimerFinished]);
+
   return (
     <div>
       <div> {displayedTimer}</div>
       <div>
-        <button onClick={handleStart}>Start</button>
-        <button onClick={handlePause}>Pause</button>
+        <button onClick={onStart}>Start</button>
+        <button onClick={onPause}>Pause</button>
         <button onClick={handleReset}>Reset</button>
       </div>
     </div>

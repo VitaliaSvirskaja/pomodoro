@@ -9,8 +9,10 @@ type PomodoroType = "Pomodoro" | "Short Break" | "Long Break";
 
 export const Home = () => {
   const { logOut } = useAuthContext();
-  const { defaultTimer } = useSettingsContext();
+  const { defaultTimer, isAutoBreakActive, isAutoPomodoroActive } =
+    useSettingsContext();
   const [pomodoroTab, setPomodoroTab] = useState<PomodoroType>("Pomodoro");
+  const [isPaused, setIsPaused] = useState(true);
 
   const initialTimer = useMemo(() => {
     if (pomodoroTab === "Pomodoro") {
@@ -31,6 +33,30 @@ export const Home = () => {
     logOut();
   }
 
+  function handleTimerFinished() {
+    switch (pomodoroTab) {
+      case "Pomodoro":
+        // TODO: interval logik implementieren
+        setPomodoroTab("Short Break");
+        if (!isAutoBreakActive) {
+          setIsPaused(true);
+        }
+        break;
+      case "Short Break":
+        setPomodoroTab("Pomodoro");
+        if (!isAutoPomodoroActive) {
+          setIsPaused(true);
+        }
+        break;
+      case "Long Break":
+        setPomodoroTab("Pomodoro");
+        if (!isAutoPomodoroActive) {
+          setIsPaused(true);
+        }
+        break;
+    }
+  }
+
   return (
     <div className={styles.homepage}>
       <Navbar />
@@ -39,6 +65,7 @@ export const Home = () => {
       </div>
 
       <button
+        className={`${pomodoroTab === "Pomodoro" ? "bg-violet-200" : ""}`}
         onClick={() => {
           togglePomodoroType("Pomodoro");
         }}
@@ -46,6 +73,7 @@ export const Home = () => {
         Pomodoro
       </button>
       <button
+        className={`${pomodoroTab === "Short Break" ? "bg-violet-200" : ""}`}
         onClick={() => {
           togglePomodoroType("Short Break");
         }}
@@ -53,13 +81,21 @@ export const Home = () => {
         Short Break
       </button>
       <button
+        className={`${pomodoroTab === "Long Break" ? "bg-violet-200" : ""}`}
         onClick={() => {
           togglePomodoroType("Long Break");
         }}
       >
         Long Break
       </button>
-      <Timer key={initialTimer} initialTimer={initialTimer} />
+      <Timer
+        key={initialTimer + pomodoroTab}
+        initialTimer={initialTimer}
+        onTimerFinished={handleTimerFinished}
+        isPaused={isPaused}
+        onPause={() => setIsPaused(true)}
+        onStart={() => setIsPaused(false)}
+      />
     </div>
   );
 };
