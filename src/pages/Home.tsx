@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { Timer } from "../components/Timer";
@@ -9,10 +9,21 @@ type PomodoroType = "Pomodoro" | "Short Break" | "Long Break";
 
 export const Home = () => {
   const { logOut } = useAuthContext();
-  const { defaultTimer, isAutoBreakActive, isAutoPomodoroActive } =
-    useSettingsContext();
+  const {
+    defaultTimer,
+    isAutoBreakActive,
+    isAutoPomodoroActive,
+    longBreakInterval,
+  } = useSettingsContext();
   const [pomodoroTab, setPomodoroTab] = useState<PomodoroType>("Pomodoro");
   const [isPaused, setIsPaused] = useState(true);
+  const [remainingShortBreaks, setRemainingShortBreaks] = useState(
+    longBreakInterval - 1
+  );
+
+  useEffect(() => {
+    setRemainingShortBreaks(longBreakInterval - 1);
+  }, [longBreakInterval]);
 
   const initialTimer = useMemo(() => {
     if (pomodoroTab === "Pomodoro") {
@@ -36,8 +47,13 @@ export const Home = () => {
   function handleTimerFinished() {
     switch (pomodoroTab) {
       case "Pomodoro":
-        // TODO: interval logik implementieren
-        setPomodoroTab("Short Break");
+        if (remainingShortBreaks > 0) {
+          setPomodoroTab("Short Break");
+          setRemainingShortBreaks(remainingShortBreaks - 1);
+        } else {
+          setPomodoroTab("Long Break");
+          setRemainingShortBreaks(longBreakInterval - 1);
+        }
         if (!isAutoBreakActive) {
           setIsPaused(true);
         }
