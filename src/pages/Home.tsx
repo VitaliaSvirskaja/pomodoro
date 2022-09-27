@@ -31,7 +31,6 @@ export const Home = () => {
     } else if (pomodoroTab === "Short Break") {
       return defaultTimer.shortBreak;
     } else {
-      console.log(defaultTimer.longBreak);
       return defaultTimer.longBreak;
     }
   }, [pomodoroTab, defaultTimer]);
