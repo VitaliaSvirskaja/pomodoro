@@ -3,8 +3,6 @@ import { useAuthContext } from "../context/AuthContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { Timer } from "../components/Timer";
 import { Navbar } from "../components/Navbar";
-import styles from "./Home.module.css";
-
 type PomodoroType = "Pomodoro" | "Short Break" | "Long Break";
 
 export const Home = () => {
@@ -73,7 +71,7 @@ export const Home = () => {
   }
 
   return (
-    <div className={styles.homepage}>
+    <div className="h-screen bg-home-background bg-cover">
       <Navbar />
       <div>
         <button onClick={logout}>Logout</button>
