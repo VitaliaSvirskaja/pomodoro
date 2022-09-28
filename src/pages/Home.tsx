@@ -3,6 +3,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { Timer } from "../components/Timer";
 import { Navbar } from "../components/Navbar";
+import { PomodoroButton } from "../components/PomodoroButton";
 type PomodoroType = "Pomodoro" | "Short Break" | "Long Break";
 
 export const Home = () => {
@@ -71,44 +72,40 @@ export const Home = () => {
   }
 
   return (
-    <div className="h-screen bg-home-background bg-cover">
-      <Navbar />
-      <div>
-        <button onClick={logout}>Logout</button>
-      </div>
+    <div className="flex h-screen flex-col bg-home-background bg-cover">
+      <div className="m-auto w-full max-w-5xl rounded-xl bg-primary bg-opacity-30 py-12 px-16 backdrop-blur-md">
+        <Navbar />
+        <div>
+          <button onClick={logout}>Logout</button>
+        </div>
 
-      <button
-        className={`${pomodoroTab === "Pomodoro" ? "bg-violet-200" : ""}`}
-        onClick={() => {
-          togglePomodoroType("Pomodoro");
-        }}
-      >
-        Pomodoro
-      </button>
-      <button
-        className={`${pomodoroTab === "Short Break" ? "bg-violet-200" : ""}`}
-        onClick={() => {
-          togglePomodoroType("Short Break");
-        }}
-      >
-        Short Break
-      </button>
-      <button
-        className={`${pomodoroTab === "Long Break" ? "bg-violet-200" : ""}`}
-        onClick={() => {
-          togglePomodoroType("Long Break");
-        }}
-      >
-        Long Break
-      </button>
-      <Timer
-        key={initialTimer + pomodoroTab}
-        initialTimer={initialTimer}
-        onTimerFinished={handleTimerFinished}
-        isPaused={isPaused}
-        onPause={() => setIsPaused(true)}
-        onStart={() => setIsPaused(false)}
-      />
+        <div className="flex justify-center gap-8">
+          <PomodoroButton
+            label="Pomodoro"
+            onClick={() => togglePomodoroType("Pomodoro")}
+            isActive={pomodoroTab === "Pomodoro"}
+          />
+
+          <PomodoroButton
+            label="Short Break"
+            onClick={() => togglePomodoroType("Short Break")}
+            isActive={pomodoroTab === "Short Break"}
+          />
+          <PomodoroButton
+            label="Long Break"
+            onClick={() => togglePomodoroType("Long Break")}
+            isActive={pomodoroTab === "Long Break"}
+          />
+        </div>
+        <Timer
+          key={initialTimer + pomodoroTab}
+          initialTimer={initialTimer}
+          onTimerFinished={handleTimerFinished}
+          isPaused={isPaused}
+          onPause={() => setIsPaused(true)}
+          onStart={() => setIsPaused(false)}
+        />
+      </div>
     </div>
   );
 };
