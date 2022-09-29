@@ -29,7 +29,7 @@ export const Navbar = () => {
         />
       </svg>
 
-      <div className="flex gap-1">
+      <div className="flex gap-2">
         <TimerSettings />
         {user ? (
           <svg
@@ -38,7 +38,7 @@ export const Navbar = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="h-6 w-6 text-white"
+            className="h-8 w-8 text-white"
           >
             <path
               strokeLinecap="round"
@@ -47,7 +47,13 @@ export const Navbar = () => {
             />
           </svg>
         ) : (
-          <button onClick={handleLoginClick}>Login</button>
+          <button
+            className="text-xl font-bold text-white
+          "
+            onClick={handleLoginClick}
+          >
+            Login
+          </button>
         )}
       </div>
     </div>
