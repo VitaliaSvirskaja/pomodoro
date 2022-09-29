@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import styles from "./Login.module.css";
 import googleLogo from "../assets/googleLogo.png";
 import { firebaseAuth, googleAuth } from "../firebase/firebase";
 import { signInWithPopup } from "firebase/auth";
@@ -49,28 +48,53 @@ export const Login = () => {
   }
 
   return (
-    <div>
-      <button onClick={handleLoginWithGoogle}>
-        <div className={styles.logInWithGoogle}>
-          <img
-            src={googleLogo}
-            alt="google logo"
-            className={styles.googleLogo}
-          />
-          <p>Login with Google</p>
+    <div className="flex h-screen flex-col bg-home-background bg-cover">
+      <div className="text-center">Pomoplatzhalter</div>
+      <h1 className="text-center text-2xl font-bold text-primary-dark">
+        Login
+      </h1>
+      <div className="m-auto flex w-full max-w-lg flex-col gap-2 rounded-lg bg-white py-10">
+        <div className="px-14">
+          <button
+            onClick={handleLoginWithGoogle}
+            className="flex h-10 w-full items-center justify-center gap-2.5 rounded-lg border border-2 border-gray-50 px-4 py-6 shadow-lg transition-shadow hover:shadow-xl"
+          >
+            <img src={googleLogo} alt="google logo" className="h-8" />
+            <p className="text-base font-semibold text-primary-dark">
+              Login with Google
+            </p>
+          </button>
         </div>
-      </button>
-      <div>
-        <label htmlFor="email">Email: </label>
-        <input type="email" id="email" onChange={handleEmailLogin} />
-      </div>
-      <div>
-        <label htmlFor="password">Password: </label>
-        <input type="password" id="password" onChange={handlePasswordLogin} />
-      </div>
-      <button onClick={login}>Log in with Email</button>
-      <div>
-        <a href="">Forgot Password</a>
+
+        <div className="flex w-full items-center justify-evenly gap-1">
+          <div className="flex-1 border-t border-primary"></div>
+          <p className="text-xs text-primary">or</p>
+          <div className="flex-1 border-t border-primary"></div>
+        </div>
+
+        <div className="px-14">
+          <div>
+            <label htmlFor="email">Email: </label>
+            <input type="email" id="email" onChange={handleEmailLogin} />
+          </div>
+          <div>
+            <label htmlFor="password">Password: </label>
+            <input
+              type="password"
+              id="password"
+              onChange={handlePasswordLogin}
+            />
+          </div>
+          <button
+            className="w-full rounded-md bg-primary py-3 font-semibold text-white transition-colors hover:bg-primary-dark"
+            onClick={login}
+          >
+            Log in with Email
+          </button>
+          <div>
+            <a href="">Forgot Password</a>
+          </div>
+        </div>
       </div>
       <div>
         <a href="/register">Create account</a>
