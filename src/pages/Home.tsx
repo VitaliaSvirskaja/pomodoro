@@ -1,13 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useAuthContext } from "../context/AuthContext";
 import { useSettingsContext } from "../context/SettingsContext";
 import { Timer } from "../components/Timer";
 import { Navbar } from "../components/Navbar";
 import { PomodoroButton } from "../components/PomodoroButton";
+
 type PomodoroType = "Pomodoro" | "Short Break" | "Long Break";
 
 export const Home = () => {
-  const { logOut } = useAuthContext();
   const {
     defaultTimer,
     isAutoBreakActive,
@@ -36,10 +35,6 @@ export const Home = () => {
 
   function togglePomodoroType(pomodoroType: PomodoroType) {
     setPomodoroTab(pomodoroType);
-  }
-
-  function logout() {
-    logOut();
   }
 
   function handleTimerFinished() {
@@ -75,10 +70,6 @@ export const Home = () => {
     <div className="flex h-screen flex-col items-center justify-center bg-home-background bg-cover px-28 py-16">
       <div className="w-full max-w-5xl rounded-xl bg-primary bg-opacity-30 py-12 px-16 backdrop-blur-md">
         <Navbar />
-        <div>
-          <button onClick={logout}>Logout</button>
-        </div>
-
         <div className="flex flex-col gap-16">
           <div className="flex justify-center gap-8">
             <PomodoroButton
