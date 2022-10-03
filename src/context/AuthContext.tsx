@@ -71,11 +71,7 @@ export const AuthContextProvider = (props: PropsWithChildren) => {
         email,
         password
       );
-      console.log("created");
-      setFirebaseUser(userCredential.user);
-      console.log("userCredentials were set");
       await API.createUserTimerSettings(userCredential.user.uid);
-      console.log("timer settings were set");
     } catch (error) {
       console.log(error);
     }
