@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import googleLogo from "../assets/googleLogo.png";
 import { API } from "../firebase/API";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Input } from "../components/Input";
 
 export const Login = () => {
@@ -87,9 +87,9 @@ export const Login = () => {
 
       <div className="text-center text-primary-dark">
         <p className="text-lg">Don't have an account?</p>
-        <a href="/register" className="font-semibold underline">
+        <Link className="font-semibold underline" to="/register">
           Create account
-        </a>
+        </Link>
       </div>
     </div>
   );
