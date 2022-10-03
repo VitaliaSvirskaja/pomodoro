@@ -5,6 +5,7 @@ import { firebaseAuth, googleAuth } from "../firebase/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { API } from "../firebase/API";
 import { Navigate } from "react-router-dom";
+import { Input } from "../components/Input";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -72,7 +73,13 @@ export const Login = () => {
           <div className="flex-1 border-t border-primary"></div>
         </div>
 
-        <div className="px-14">
+        <div className="flex flex-col px-14">
+          <Input
+            label="Email"
+            type={"email"}
+            variant={"filled"}
+            onChange={handleEmailLogin}
+          />
           <div>
             <label htmlFor="email">Email: </label>
             <input type="email" id="email" onChange={handleEmailLogin} />
@@ -91,10 +98,13 @@ export const Login = () => {
           >
             Log in with Email
           </button>
-          <div>
-            <a href="">Forgot Password</a>
-          </div>
         </div>
+        <a
+          href=""
+          className="text-center text-sm font-semibold text-primary-dark underline underline-offset-2"
+        >
+          Forgot Password
+        </a>
       </div>
       <div>
         <a href="/register">Create account</a>
