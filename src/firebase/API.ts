@@ -10,7 +10,15 @@ async function createUserTimerSettings(userID: string) {
   if (userDoc.exists()) {
     return;
   }
-  await setDoc(userRef, { pomodoro: 25, shortBreak: 5, longBreak: 15 });
+  const defaultSettings: UserSettings = {
+    pomodoro: 25,
+    shortBreak: 5,
+    longBreak: 15,
+    longBreakInterval: 4,
+    isAutoBreakActive: false,
+    isAutoPomodoroActive: false,
+  };
+  await setDoc(userRef, defaultSettings);
 }
 
 async function updateTimerSettings(userID: string, userSettings: UserSettings) {
