@@ -21,8 +21,9 @@ export const Register = () => {
     API.signInWithGoogle();
   }
 
-  function handleSubmit() {
-    // TODO implement
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    register(email, password);
   }
 
   return (
