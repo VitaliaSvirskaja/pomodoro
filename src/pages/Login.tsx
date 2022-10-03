@@ -85,7 +85,7 @@ export const Login = () => {
 
           <button
             type="submit"
-            className="w-full rounded-md bg-primary py-3 font-semibold tracking-widest text-white transition-colors hover:bg-primary-dark"
+            className="w-full rounded-md bg-primary py-3.5 font-semibold tracking-widest text-white transition-colors hover:bg-primary-dark"
           >
             Log in with Email
           </button>
