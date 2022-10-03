@@ -75,15 +75,11 @@ export const Login = () => {
 
         <div className="flex flex-col px-14">
           <Input
-            label="Email"
+            label="EMAIL"
             type={"email"}
             variant={"filled"}
             onChange={handleEmailLogin}
           />
-          <div>
-            <label htmlFor="email">Email: </label>
-            <input type="email" id="email" onChange={handleEmailLogin} />
-          </div>
           <div>
             <label htmlFor="password">Password: </label>
             <input
