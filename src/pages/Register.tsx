@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { useAuthContext } from "../context/AuthContext";
 import googleLogo from "../assets/googleLogo.png";
 import { Input } from "../components/Input";
 import { API } from "../firebase/API";
 import { Navigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type Inputs = {
+  email: string;
+  password: string;
+  repeatPassword: string;
+};
 
 export const Register = () => {
-  const { register, isLoggedIn } = useAuthContext();
+  const { register: registerUser, isLoggedIn } = useAuthContext();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
+  const { register, handleSubmit, watch } = useForm<Inputs>();
 
   if (isLoggedIn) {
     return <Navigate to="/" />;
@@ -21,10 +26,13 @@ export const Register = () => {
     API.signInWithGoogle();
   }
 
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    register(email, password);
-  }
+  console.log(watch("email"));
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+
+    // registerUser(data.email, data.password);
+  };
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4 bg-home-background bg-cover">
@@ -53,27 +61,54 @@ export const Register = () => {
         </div>
 
         {/* TODO: Formvalidierung implementieren */}
-        <form className="flex flex-col gap-6 px-14" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-col gap-6 px-14"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Input
             label="EMAIL"
             type={"email"}
             variant={"filled"}
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            {...register("email")}
+
+            // error={
+            //   email === "" && wasEmailFocussed
+            //     ? "E-Mail address may not be empty."
+            //     : undefined
+            // }
+            // onBlur={() => {
+            //   setWasEmailFocussed(true);
+            // }}
           />
           <Input
             label="PASSWORD"
             type={"password"}
             variant={"filled"}
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            {...register("password")}
+            // error={
+            //   password === "" && wasPasswordFocused
+            //     ? "Password may not be empty."
+            //     : undefined
+            // }
+            // onBlur={() => {
+            //   setWasPasswordFocused(true);
+            // }}
           />
           <Input
             label="REPEAT PASSWORD"
             type={"password"}
             variant={"filled"}
-            value={repeatPassword}
-            onChange={(event) => setRepeatPassword(event.target.value)}
+            {...register("repeatPassword")}
+            // error={
+            //   repeatPassword !== password &&
+            //   password !== "" &&
+            //   wasPasswordRepeatFocused
+            //     ? "Passwords don't match."
+            //     : undefined
+            // }
+            // onBlur={() => {
+            //   setWasPasswordRepeatFocused(true);
+            // }}
           />
           <button
             type="submit"
