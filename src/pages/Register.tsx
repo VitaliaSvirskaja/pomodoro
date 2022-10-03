@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import googleLogo from "../assets/googleLogo.png";
 import { Input } from "../components/Input";
+import { API } from "../firebase/API";
 
 export const Register = () => {
   const { register } = useAuthContext();
@@ -12,7 +13,7 @@ export const Register = () => {
   const [repeatPassword, setRepeatPassword] = useState("");
 
   function handleRegisterWithGoogle() {
-    // TODO implement
+    API.signInWithGoogle();
   }
 
   function handleSubmit() {
