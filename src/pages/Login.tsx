@@ -16,16 +16,9 @@ export const Login = () => {
     return <Navigate to="/" />;
   }
 
-  function login() {
+  function login(event: React.FormEvent) {
+    event.preventDefault();
     logIn(email, password);
-  }
-
-  function handleEmailLogin(email: React.ChangeEvent<HTMLInputElement>) {
-    setEmail(email.target.value);
-  }
-
-  function handlePasswordLogin(password: React.ChangeEvent<HTMLInputElement>) {
-    setPassword(password.target.value);
   }
 
   function handleLoginWithGoogle() {
@@ -49,61 +42,66 @@ export const Login = () => {
   }
 
   return (
-    <div className="flex h-screen flex-col bg-home-background bg-cover">
+    <div className="flex h-screen flex-col items-center justify-center gap-4 bg-home-background bg-cover">
+      {/* TODO Logo ergänzen */}
       <div className="text-center">Pomoplatzhalter</div>
-      <h1 className="text-center text-2xl font-bold text-primary-dark">
+      <h1 className="text-center text-2xl font-bold tracking-widest text-primary-dark">
         Login
       </h1>
-      <div className="m-auto flex w-full max-w-lg flex-col gap-2 rounded-lg bg-white py-10">
+      <div className="flex w-full max-w-lg flex-col gap-8 rounded-lg bg-white py-10">
         <div className="px-14">
           <button
             onClick={handleLoginWithGoogle}
             className="flex h-10 w-full items-center justify-center gap-2.5 rounded-lg border border-2 border-gray-50 px-4 py-6 shadow-lg transition-shadow hover:shadow-xl"
           >
             <img src={googleLogo} alt="google logo" className="h-8" />
-            <p className="text-base font-semibold text-primary-dark">
-              Login with Google
+            <p className="text-lg font-semibold text-primary-dark">
+              Log in with Google
             </p>
           </button>
         </div>
 
-        <div className="flex w-full items-center justify-evenly gap-1">
+        <div className="flex w-full items-center justify-evenly gap-2">
           <div className="flex-1 border-t border-primary"></div>
-          <p className="text-xs text-primary">or</p>
+          <p className="text-sm font-semibold text-primary">or</p>
           <div className="flex-1 border-t border-primary"></div>
         </div>
-
-        <div className="flex flex-col px-14">
+        {/* TODO: Formvalidierung implementieren */}
+        <form className="flex flex-col gap-6 px-14" onSubmit={login}>
           <Input
             label="EMAIL"
             type={"email"}
             variant={"filled"}
-            onChange={handleEmailLogin}
+            onChange={(event) => setEmail(event.target.value)}
           />
-          <div>
-            <label htmlFor="password">Password: </label>
-            <input
-              type="password"
-              id="password"
-              onChange={handlePasswordLogin}
-            />
-          </div>
+          <Input
+            label="PASSWORD"
+            type={"password"}
+            variant={"filled"}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+
           <button
-            className="w-full rounded-md bg-primary py-3 font-semibold text-white transition-colors hover:bg-primary-dark"
-            onClick={login}
+            type="submit"
+            className="w-full rounded-md bg-primary py-3 font-semibold tracking-widest text-white transition-colors hover:bg-primary-dark"
           >
             Log in with Email
           </button>
-        </div>
+        </form>
+        {/* TODO Link für Passwort zurücksetzen ergänzen */}
         <a
           href=""
-          className="text-center text-sm font-semibold text-primary-dark underline underline-offset-2"
+          className="text-center font-semibold text-primary-dark underline underline-offset-2"
         >
           Forgot Password
         </a>
       </div>
-      <div>
-        <a href="/register">Create account</a>
+
+      <div className="text-center text-primary-dark">
+        <p className="text-lg">Don't have an account?</p>
+        <a href="/register" className="font-semibold underline">
+          Create account
+        </a>
       </div>
     </div>
   );
