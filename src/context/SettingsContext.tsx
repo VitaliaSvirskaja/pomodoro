@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 import { useAuthContext } from "./AuthContext";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 import { API } from "../firebase/API";
 import { UserSettings } from "../interfaces/UserSettings";
@@ -44,36 +44,38 @@ export const SettingsContextProvider = (props: PropsWithChildren) => {
   const { user } = useAuthContext();
 
   useEffect(() => {
-    async function fetchSettings() {
-      if (!user) {
-        setDefaultTimer({
-          pomodoro: 25,
-          shortBreak: 5,
-          longBreak: 15,
-        });
-        setIsAutoBreakActive(false);
-        setIsAutoPomodoroActive(false);
-        setLongBreakInterval(1);
-      } else {
-        const userRef = doc(firestore, "users", user?.uid);
-        const userDoc = await getDoc(userRef);
-        const userTimerPomodoro = userDoc.get("pomodoro");
-        const userTimerLongBreak = userDoc.get("longBreak");
-        const userTimerShortBreak = userDoc.get("shortBreak");
-        const userLongBreakInterval = userDoc.get("longBreakInterval");
-        const isAutoBreakActive = userDoc.get("isAutoBreakActive");
-        const isAutoPomodoroActive = userDoc.get("isAutoPomodoroActive");
-        setDefaultTimer({
-          pomodoro: userTimerPomodoro,
-          shortBreak: userTimerShortBreak,
-          longBreak: userTimerLongBreak,
-        });
-        setIsAutoBreakActive(isAutoBreakActive);
-        setIsAutoPomodoroActive(isAutoPomodoroActive);
-        setLongBreakInterval(userLongBreakInterval);
-      }
+    if (!user) {
+      setDefaultTimer({
+        pomodoro: 25,
+        shortBreak: 5,
+        longBreak: 15,
+      });
+      setIsAutoBreakActive(false);
+      setIsAutoPomodoroActive(false);
+      setLongBreakInterval(1);
+      return;
     }
-    fetchSettings();
+    const userSettingsRef = doc(firestore, "users", user.uid);
+    const unsubscribeSnapshot = onSnapshot(userSettingsRef, (snapshot) => {
+      const userTimerPomodoro = snapshot.get("pomodoro");
+      const userTimerLongBreak = snapshot.get("longBreak");
+      const userTimerShortBreak = snapshot.get("shortBreak");
+      const userLongBreakInterval = snapshot.get("longBreakInterval");
+      const isAutoBreakActive = snapshot.get("isAutoBreakActive");
+      const isAutoPomodoroActive = snapshot.get("isAutoPomodoroActive");
+      setDefaultTimer({
+        pomodoro: userTimerPomodoro,
+        shortBreak: userTimerShortBreak,
+        longBreak: userTimerLongBreak,
+      });
+      setIsAutoBreakActive(isAutoBreakActive);
+      setIsAutoPomodoroActive(isAutoPomodoroActive);
+      setLongBreakInterval(userLongBreakInterval);
+    });
+
+    return () => {
+      unsubscribeSnapshot();
+    };
   }, [user]);
 
   async function handleSaveSettings(userSettings: UserSettings) {
