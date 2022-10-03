@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import googleLogo from "../assets/googleLogo.png";
-import { firebaseAuth, googleAuth } from "../firebase/firebase";
-import { signInWithPopup } from "firebase/auth";
 import { API } from "../firebase/API";
 import { Navigate } from "react-router-dom";
 import { Input } from "../components/Input";
@@ -23,19 +21,7 @@ export const Login = () => {
 
   function handleLoginWithGoogle() {
     if (!user) {
-      signInWithPopup(firebaseAuth, googleAuth)
-        .then((result) => {
-          const user = result.user;
-
-          API.createUserTimerSettings(user.uid);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.error(errorCode + errorMessage);
-
-          // TODO Kollision zwischen Google Login und Email Login bearbeiten
-        });
+      API.signInWithGoogle();
     } else {
       console.log("User bereits vorhanden");
     }
