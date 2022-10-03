@@ -72,12 +72,14 @@ export const Login = () => {
             label="EMAIL"
             type={"email"}
             variant={"filled"}
+            value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
           <Input
             label="PASSWORD"
             type={"password"}
             variant={"filled"}
+            value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
 
