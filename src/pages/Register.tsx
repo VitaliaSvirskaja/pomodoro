@@ -4,13 +4,18 @@ import { useAuthContext } from "../context/AuthContext";
 import googleLogo from "../assets/googleLogo.png";
 import { Input } from "../components/Input";
 import { API } from "../firebase/API";
+import { Navigate } from "react-router-dom";
 
 export const Register = () => {
-  const { register } = useAuthContext();
+  const { register, isLoggedIn } = useAuthContext();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
 
   function handleRegisterWithGoogle() {
     API.signInWithGoogle();
