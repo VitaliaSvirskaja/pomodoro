@@ -6,11 +6,11 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   variant?: "filled";
 }
 
-export function Input({ error, label, variant, ...inputProps }: Props) {
-  return (
+export const Input = React.forwardRef<HTMLInputElement, Props>(
+  ({ error, label, variant, ...inputProps }, ref) => (
     <div className="flex w-full flex-col gap-1">
       <label
-        htmlFor={label}
+        htmlFor={inputProps.name}
         className={`${
           variant === "filled"
             ? "font-semibold tracking-wider text-primary-dark"
@@ -20,8 +20,8 @@ export function Input({ error, label, variant, ...inputProps }: Props) {
         {label}
       </label>
       <input
+        ref={ref}
         {...inputProps}
-        name={label}
         className={`rounded border border-2 py-3 px-3 outline-0 focus:ring focus:ring-2 ${
           error === undefined
             ? "focus:ring-violet-500"
@@ -31,5 +31,5 @@ export function Input({ error, label, variant, ...inputProps }: Props) {
 
       <span className="pl-1 text-xs text-red-600">{error}</span>
     </div>
-  );
-}
+  )
+);
