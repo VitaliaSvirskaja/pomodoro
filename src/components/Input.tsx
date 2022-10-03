@@ -22,7 +22,7 @@ export function Input({ error, label, variant, ...inputProps }: Props) {
       <input
         {...inputProps}
         name={label}
-        className={`rounded border border-2 py-2 px-3 outline-0 focus:ring focus:ring-2 ${
+        className={`rounded border border-2 py-3 px-3 outline-0 focus:ring focus:ring-2 ${
           error === undefined ? "focus:ring-violet-500" : "focus:ring-red-500"
         } ${variant === "filled" ? "bg-gray-100" : ""}`}
       />
