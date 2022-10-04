@@ -15,8 +15,12 @@ type Inputs = {
 
 export const Register = () => {
   const { register: registerUser, isLoggedIn } = useAuthContext();
-
-  const { register, handleSubmit, watch } = useForm<Inputs>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>({ mode: "all" });
 
   if (isLoggedIn) {
     return <Navigate to="/" />;
@@ -26,12 +30,8 @@ export const Register = () => {
     API.signInWithGoogle();
   }
 
-  console.log(watch("email"));
-
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-
-    // registerUser(data.email, data.password);
+    registerUser(data.email, data.password);
   };
 
   return (
@@ -60,7 +60,6 @@ export const Register = () => {
           <div className="flex-1 border-t border-primary"></div>
         </div>
 
-        {/* TODO: Formvalidierung implementieren */}
         <form
           className="flex flex-col gap-6 px-14"
           onSubmit={handleSubmit(onSubmit)}
@@ -69,46 +68,31 @@ export const Register = () => {
             label="EMAIL"
             type={"email"}
             variant={"filled"}
-            {...register("email")}
-
-            // error={
-            //   email === "" && wasEmailFocussed
-            //     ? "E-Mail address may not be empty."
-            //     : undefined
-            // }
-            // onBlur={() => {
-            //   setWasEmailFocussed(true);
-            // }}
+            {...register("email", { required: "Email is required." })}
+            error={errors.email?.message}
           />
           <Input
             label="PASSWORD"
             type={"password"}
             variant={"filled"}
-            {...register("password")}
-            // error={
-            //   password === "" && wasPasswordFocused
-            //     ? "Password may not be empty."
-            //     : undefined
-            // }
-            // onBlur={() => {
-            //   setWasPasswordFocused(true);
-            // }}
+            {...register("password", {
+              required: "Password is required.",
+            })}
+            error={errors.password?.message}
           />
           <Input
             label="REPEAT PASSWORD"
             type={"password"}
             variant={"filled"}
-            {...register("repeatPassword")}
-            // error={
-            //   repeatPassword !== password &&
-            //   password !== "" &&
-            //   wasPasswordRepeatFocused
-            //     ? "Passwords don't match."
-            //     : undefined
-            // }
-            // onBlur={() => {
-            //   setWasPasswordRepeatFocused(true);
-            // }}
+            {...register("repeatPassword", {
+              required: "Password confirmation is required.",
+              validate: (currentRepeatPassword: string) => {
+                if (watch("password") !== currentRepeatPassword) {
+                  return "Passwords do no match.";
+                }
+              },
+            })}
+            error={errors.repeatPassword?.message}
           />
           <button
             type="submit"
