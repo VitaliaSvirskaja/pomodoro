@@ -94,13 +94,12 @@ export const Login = () => {
             Log in with Email
           </button>
         </form>
-        {/* TODO Link für Passwort zurücksetzen ergänzen */}
-        <a
-          href=""
+        <Link
+          to="/reset-password"
           className="text-center font-semibold text-primary-dark underline underline-offset-2"
         >
-          Forgot Password
-        </a>
+          Forgot password?
+        </Link>
       </div>
 
       <div className="text-center text-primary-dark">
