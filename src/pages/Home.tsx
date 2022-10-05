@@ -98,7 +98,7 @@ export const Home = () => {
             onStart={() => setIsPaused(false)}
           />
 
-          <button className="m-auto flex w-fit gap-1 rounded-full border border-2 border-dashed border-primary-light bg-primary py-4 px-8 font-semibold text-primary-light outline-0 hover:bg-primary-dark focus:border-primary-dark">
+          <button className="m-auto flex w-fit gap-1 rounded-full border border-2 border-dashed border-primary-dark bg-primary py-4 px-8 font-semibold text-primary-light outline-0 hover:bg-primary-dark focus:border-primary-light">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
