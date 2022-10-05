@@ -14,7 +14,7 @@ export const TimerSettings = () => {
 
   return (
     <div>
-      <div>
+      <button className=" rounded-full focus:outline-white">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -28,7 +28,7 @@ export const TimerSettings = () => {
             clipRule="evenodd"
           />
         </svg>
-      </div>
+      </button>
       <TimerSettingsDialog isOpen={isDialogOpen} onClose={handleCloseDialog} />
     </div>
   );
