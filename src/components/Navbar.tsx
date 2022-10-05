@@ -2,29 +2,27 @@ import { TimerSettings } from "./TimerSettings";
 import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import { DropdownMenu } from "./DropdownMenu";
 
 export const Navbar = () => {
-  const { user, logOut } = useAuthContext();
+  const { user } = useAuthContext();
   const navigate = useNavigate();
 
   function handleLoginClick() {
     return navigate("/login");
   }
 
-  function handleLogoutClick() {
-    logOut();
-  }
-
   return (
     <div className="flex justify-between">
       {/* TODO: replace with real logo */}
+
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="h-6 w-6 text-white hover:cursor-pointer"
+        className="h-6 w-6 text-white hover:cursor-pointer "
       >
         <path
           strokeLinecap="round"
@@ -36,13 +34,7 @@ export const Navbar = () => {
       <div className="flex gap-2">
         <TimerSettings />
         {user ? (
-          <button
-            className="text-xl font-bold text-white
-          "
-            onClick={handleLogoutClick}
-          >
-            Logout
-          </button>
+          <DropdownMenu />
         ) : (
           <button
             className="text-xl font-bold text-white
