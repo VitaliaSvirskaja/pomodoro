@@ -1,23 +1,30 @@
-import React, { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import googleLogo from "../assets/googleLogo.png";
 import { API } from "../firebase/API";
 import { Link, Navigate } from "react-router-dom";
 import { Input } from "../components/Input";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type Inputs = {
+  email: string;
+  password: string;
+};
 
 export const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { logIn, isLoggedIn, user } = useAuthContext();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({ mode: "all" });
 
   if (isLoggedIn) {
     return <Navigate to="/" />;
   }
 
-  function login(event: React.FormEvent) {
-    event.preventDefault();
-    logIn(email, password);
-  }
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    logIn(data.email, data.password);
+  };
 
   function handleLoginWithGoogle() {
     if (!user) {
@@ -52,21 +59,32 @@ export const Login = () => {
           <p className="text-sm font-semibold text-primary">or</p>
           <div className="flex-1 border-t border-primary"></div>
         </div>
-        {/* TODO: Formvalidierung implementieren */}
-        <form className="flex flex-col gap-6 px-14" onSubmit={login}>
+
+        <form
+          className="flex flex-col gap-6 px-14"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Input
             label="EMAIL"
             type={"email"}
             variant={"filled"}
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            {...register("email", {
+              required: "Email is required.",
+              pattern: {
+                value: /^([a-zA-Z0-9%+-]+)@([a-zA-Z0-9]+)\.([a-zA-Z]{2,5})$/,
+                message: "Please enter a valid email.",
+              },
+            })}
+            error={errors.email?.message}
           />
           <Input
             label="PASSWORD"
             type={"password"}
             variant={"filled"}
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            {...register("password", {
+              required: "Password is required.",
+            })}
+            error={errors.password?.message}
           />
 
           <button
