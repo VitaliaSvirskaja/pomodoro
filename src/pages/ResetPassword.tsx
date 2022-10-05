@@ -42,7 +42,13 @@ export const ResetPassword = () => {
             label="EMAIL"
             type={"email"}
             variant={"filled"}
-            {...register("email", { required: "Email is required." })}
+            {...register("email", {
+              required: "Email is required.",
+              pattern: {
+                value: /^([a-zA-Z0-9%+-]+)@([a-zA-Z0-9]+)\.([a-zA-Z]{2,5})$/,
+                message: "Please enter a valid email.",
+              },
+            })}
             error={errors.email?.message}
           />
 
