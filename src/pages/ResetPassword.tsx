@@ -29,8 +29,8 @@ export const ResetPassword = () => {
         <div className="px-14  text-primary-dark">
           <h2 className="text-lg font-semibold">Reset your password</h2>
           <p>
-            Enter the email address linked to your Zalando account, and we’ll
-            send you a reset link.
+            Enter the email address linked to your ... account, and we’ll send
+            you a reset link.
           </p>
         </div>
 
