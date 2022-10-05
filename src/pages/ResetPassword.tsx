@@ -1,7 +1,10 @@
 import { Input } from "../components/Input";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { firebaseAuth } from "../firebase/firebase";
+import { Snackbar } from "../components/Snackbar";
 
 interface Inputs {
   email: string;
@@ -12,11 +15,35 @@ export const ResetPassword = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<Inputs>({ mode: "all" });
+
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data.email);
+    resetPassword(data.email);
   };
+
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      setIsSnackbarOpen(false);
+    }, 10000);
+
+    return () => {
+      clearTimeout(timeId);
+    };
+  }, [setIsSnackbarOpen]);
+
+  function resetPassword(email: string) {
+    sendPasswordResetEmail(firebaseAuth, email)
+      .then(() => {
+        setIsSnackbarOpen(true);
+      })
+      .catch(() => {
+        setError("email", { message: "User not found." });
+      });
+  }
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4 bg-home-background bg-cover">
@@ -45,7 +72,7 @@ export const ResetPassword = () => {
             {...register("email", {
               required: "Email is required.",
               pattern: {
-                value: /^([a-zA-Z0-9%+-]+)@([a-zA-Z0-9]+)\.([a-zA-Z]{2,5})$/,
+                value: /^([a-zA-Z0-9%+-.]+)@([a-zA-Z0-9.]+)\.([a-zA-Z]{2,5})$/,
                 message: "Please enter a valid email.",
               },
             })}
@@ -73,6 +100,7 @@ export const ResetPassword = () => {
           </Link>
         </div>
       </div>
+      {isSnackbarOpen && <Snackbar />}
     </div>
   );
 };
